@@ -1,0 +1,8 @@
+i.encrypt_button {
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/encryption16.png');
+        background-repeat: no-repeat;
+        background-size: auto;
+        display: block;
+        height: 16px;
+        width: 16px;
+}
