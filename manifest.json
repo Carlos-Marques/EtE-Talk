@@ -1,0 +1,68 @@
+{
+    "manifest_version": 2,
+    "name": "EtE-Talk",
+    "author": "Carlos-Marques",
+    "version": "0.0.1",
+    "description": "Encrypts messages in Messenger",
+    "icons": {
+        "16": "images/encryption16.png",
+        "32": "images/encryption32.png",
+        "64": "images/encryption64.png",
+        "128": "images/encryption128.png"
+    },
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/encryption16.png",
+            "32": "images/encryption32.png",
+            "64": "images/encryption64.png",
+            "128": "images/encryption128.png"
+        }
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "commands": {
+        "encrypt-text": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+E",
+                "mac": "Command+Shift+E"
+            },
+            "description": "Encrypts text from message box"
+        }
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.messenger.com/t/*"
+            ],
+            "run_at": "document_end",
+            "js": [
+                "contentScript.js"
+            ],
+            "css": [
+                "styles.css"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "images/*.png"
+    ],
+    "incognito": "spanning",
+    "offline_enabled": true,
+    "options_page": "options.html",
+    "options_ui": {
+        "chrome_style": true,
+        "page": "options.html"
+    },
+    "permissions": [
+        "tabs",
+        "declarativeContent",
+        "storage"
+    ],
+    "short_name": "EtE-Talk",
+    "version_name": "dev/0.0.1"
+}
