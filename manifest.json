@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "EtE-Talk",
     "author": "Carlos-Marques",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Encrypts messages in Messenger",
     "icons": {
         "16": "images/encryption16.png",
@@ -29,6 +29,7 @@
         "encrypt-text": {
             "suggested_key": {
                 "default": "Ctrl+Shift+E",
+                "windows": "Ctrl+Shift+E",
                 "mac": "Command+Shift+E"
             },
             "description": "Encrypts text from message box"
@@ -64,5 +65,5 @@
         "storage"
     ],
     "short_name": "EtE-Talk",
-    "version_name": "dev/0.0.2"
+    "version_name": "dev/0.0.3"
 }

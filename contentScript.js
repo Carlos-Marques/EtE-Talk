@@ -1,5 +1,24 @@
 window.addEventListener("load", listen, false);
 
+chrome.runtime.onMessage.addListener(
+    function (request) {
+        if (request == "getText") {
+            text_box = document.getElementsByClassName("_1mf _1mj")[0].children[0].children[0].innerHTML;
+            console.log("Copied");
+            copyToClipboard(text_box);
+        }
+    }
+);
+
+function copyToClipboard(text) {
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute('value', text);
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}
+
 function changePassword(passkeys, id, password) {
     passkeys[id].password = password;
     chrome.storage.sync.set({ passkeys: passkeys });
