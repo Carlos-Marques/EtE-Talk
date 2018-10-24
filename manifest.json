@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "EtE-Talk",
     "author": "Carlos-Marques",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Encrypts messages in Messenger",
     "icons": {
         "16": "images/encryption16.png",
@@ -64,5 +64,5 @@
         "storage"
     ],
     "short_name": "EtE-Talk",
-    "version_name": "dev/0.0.1"
+    "version_name": "dev/0.0.2"
 }
