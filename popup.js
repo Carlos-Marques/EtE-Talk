@@ -180,31 +180,6 @@ var aes = function () {
         }; return a
 }();
 
-
-
-window.addEventListener("load", listen, false);
-
-chrome.runtime.onMessage.addListener(
-    function (request) {
-        if (request == "getText") {
-            text = document.getElementsByClassName("_1mf _1mj")[0].children[0].children[0].innerHTML;
-            console.log("Copied");
-            let name = window.location.href;
-            chrome.storage.sync.get(['passkeys'], function (result) {
-                let id = result.passkeys.findIndex(function (element) {
-                    if (element.name == name) {
-                        return element;
-                    }
-                });
-
-                id == -1 ? console.log("No password") : copyToClipboard(cryptico.encrypt(text, result.passkeys[id].key).cipher);
-
-                console.log("Encrypted");
-            });
-        }
-    }
-);
-
 function copyToClipboard(text) {
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
@@ -214,83 +189,13 @@ function copyToClipboard(text) {
     document.body.removeChild(dummy);
 }
 
-function changeKey(passkeys, id, key) {
-    passkeys[id].key = key;
-    chrome.storage.sync.set({ passkeys: passkeys });
-    console.log("Changed " + passkeys[id].name + " " + passkeys[id].key);
-}
+let getKey = document.getElementById('getKey');
 
-function checkName(conversation, passkeys) {
-    let id = passkeys.findIndex(function (element) {
-        if (element.name == conversation.name) {
-            return element;
-        }
-    });
-    id == -1 ? saveKey(conversation, passkeys) : changeKey(passkeys, id, conversation.key);
-}
-
-function saveKey(conversation, passkeys) {
-    passkeys.push(conversation);
-    chrome.storage.sync.set({ passkeys: passkeys });
-    console.log("Saved " + conversation.name + " " + conversation.key);
-}
-
-function initPasskeys(conversation) {
-    chrome.storage.sync.set({ passkeys: [conversation] });
-    console.log("Inited " + conversation.name + " " + conversation.key);
-}
-
-function passwordPopup() {
-    let password = prompt("Please enter your password");
-    let name = window.location.href;
+getKey.onclick = function (element) {
     let Bits = 1024;
 
-    let keys = cryptico.generateRSAKey(password, Bits);
+    let key = cryptico.generateRSAKey("test", Bits);
+    copyToClipboard("EtE-Public/" + "Carlos" + ": " + cryptico.publicKeyString(key));
 
-    let key = cryptico.publicKeyString(keys);
-
-    let conversation = { name: name, key: key };
-
-    chrome.storage.sync.get(['passkeys'], function (result) {
-        result.passkeys == undefined ? initPasskeys(conversation) : checkName(conversation, result.passkeys)
-    });
-}
-
-function buttonAppend(evt) {
-    console.log("Button Append");
-    let buttonlist = document.getElementsByClassName("_39bj")[0];
-    let li_button = document.createElement("li");
-    let a_button = document.createElement("a");
-    let i_button = document.createElement("i");
-    let i_class = document.createAttribute("class");
-
-    i_class.value = "encrypt_button";
-    i_button.setAttributeNode(i_class);
-    a_button.appendChild(i_button);
-    a_button.addEventListener("click", passwordPopup);
-    li_button.appendChild(a_button);
-    buttonlist.insertBefore(li_button, buttonlist.childNodes[0]);
-}
-
-function listen() {
-    let targetNode = document.getElementById('js_6');
-    let config = { attributes: true, childList: true, subtree: true };
-    let href_number = 0;
-
-    let callback = function (mutationsList, observer) {
-        for (var mutation of mutationsList) {
-            if (mutation.attributeName == "href") {
-                href_number++;
-                if (href_number == 2) {
-                    buttonAppend();
-                    href_number = 0;
-                }
-            }
-        }
-    };
-
-    let observer = new MutationObserver(callback);
-
-    buttonAppend();
-    observer.observe(targetNode, config);
+    chrome.storage.sync.set({ key: key });
 }
