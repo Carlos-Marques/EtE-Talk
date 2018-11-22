@@ -272,16 +272,31 @@ function buttonAppend(evt) {
     buttonlist.insertBefore(li_button, buttonlist.childNodes[0]);
 }
 
+function textListen() {
+    let text_targetNode = document.getElementById('js_1');
+    let config = { attributes: true, childList: true, subtree: true };
+
+    let text_callback = function (mutationsList) {
+        for (var mutation of mutationsList) {
+            console.log(mutation.attributeName);
+        }
+    }
+
+    let text_observer = new MutationObserver(text_callback);
+    text_observer.observe(text_targetNode, config);
+}
+
 function listen() {
     let targetNode = document.getElementById('js_6');
     let config = { attributes: true, childList: true, subtree: true };
     let href_number = 0;
 
-    let callback = function (mutationsList, observer) {
+    let name_callback = function (mutationsList) {
         for (var mutation of mutationsList) {
             if (mutation.attributeName == "href") {
                 href_number++;
                 if (href_number == 2) {
+                   
                     buttonAppend();
                     href_number = 0;
                 }
@@ -289,8 +304,8 @@ function listen() {
         }
     };
 
-    let observer = new MutationObserver(callback);
+    let name_observer = new MutationObserver(name_callback);
 
     buttonAppend();
-    observer.observe(targetNode, config);
+    name_observer.observe(targetNode, config);
 }
